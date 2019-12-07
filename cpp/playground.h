@@ -14,11 +14,13 @@ namespace playground {
             return {};
         }
 
+        // Naive approach - sort and then index into the array
         // Must copy the vector to sort it
         // auto v2 = v;
         // std::sort(v2.begin(), v2.end());
         // return v2.at(k-1);
 
+        // Better approach - build a min-heap, and pop off k elements
         // Must copy the vector to heapify it
         auto h = v;
         std::make_heap(h.begin(), h.end(), std::greater{});
