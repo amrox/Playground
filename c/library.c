@@ -5,7 +5,7 @@
 #include <string.h>
 
 
-int compare_ints(const void* a, const void* b)
+int compare_ints(void const* a, void const* b)
 {
     int arg1 = *(const int*)a;
     int arg2 = *(const int*)b;
