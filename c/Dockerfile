@@ -30,4 +30,4 @@ FROM builder
 COPY . /work/src
 WORKDIR /work/build
 RUN /opt/cmake/bin/cmake -DENABLE_TESTS=ON ../src/ && make
-CMD /opt/cmake/bin/ctest
+CMD /opt/cmake/bin/ctest -R test_playground
