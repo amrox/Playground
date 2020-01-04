@@ -29,5 +29,5 @@ RUN curl -O https://cmake.org/files/v${CMAKE_VERSION_SHORT}/cmake-${CMAKE_VERSIO
 FROM builder
 COPY . /work/src
 WORKDIR /work/build
-RUN /opt/cmake/bin/cmake ../src/ && make playground-test
-CMD ./playground-test
+RUN /opt/cmake/bin/cmake -DENABLE_TESTS=ON ../src/ && make
+CMD /opt/cmake/bin/ctest
