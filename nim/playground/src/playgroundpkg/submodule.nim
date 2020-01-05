@@ -3,8 +3,8 @@
 # remove this file altogether. You may create additional modules alongside
 # this file as required.
 
-import algorithm
 import options
+import minmaxheap
 
 proc getWelcomeMessage*(): string = "Hello, World!"
 
@@ -12,4 +12,8 @@ proc kth*(list: seq[int], k: int): Option[int] =
   let idx = k - 1
   if idx < 0 or idx >= len(list):
     return none(int)
-  return some(sorted(list)[idx])
+  
+  var heap = toMinMaxHeap(list)
+  for _ in 0..<idx:
+    discard heap.popmin
+  some(heap.min)
