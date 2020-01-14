@@ -10,9 +10,9 @@ int sum(int x, int y) {
 	return x + y;
 }
 
-int kth(int[]) {
+// int kth(int[]) {
 
-}
+// }
 
 unittest {
 	assert(sum(2, 2) == 4);
