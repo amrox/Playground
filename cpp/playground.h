@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+// #include <istream>
 #include <numeric>
 #include <optional>
 #include <sstream>
@@ -99,7 +100,35 @@ namespace playground {
 
         static std::optional<IPV4> from_string(std::string const & str)
         {
-            return std::nullopt;
+            uint8_t ip[4];
+
+            std::vector<std::string> tokens;
+            std::string token;
+            std::istringstream token_stream(str);
+            while (std::getline(token_stream, token, '.'))
+            {
+                tokens.push_back(token);
+            }
+
+            if (tokens.size() != 4)
+            {
+                return std::nullopt;
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                unsigned long t = std::stol(tokens.at(i));
+                if (t <= 255) // TODO: some limit constant
+                {
+                    ip[i] = t;
+                }
+                else
+                {
+                    return std::nullopt;
+                }
+            }
+
+            return IPV4(ip[0], ip[1], ip[2], ip[3]);
         }
 
         IPV4() = delete;
@@ -108,7 +137,13 @@ namespace playground {
 
         IPV4 &operator=(IPV4 const & other) = default;
 
-        auto to_string() -> std::string
+        auto value() const -> uint32_t 
+        {
+            // TODO: this isn't right
+            return static_cast<uint32_t>(*_ip);
+        }
+
+        auto to_string() const -> std::string 
         {
             // TODO: fmt would be nice here
             std::ostringstream ss;
@@ -122,5 +157,10 @@ namespace playground {
     private:
         uint8_t _ip[4];
     };
+
+    inline bool operator==(const IPV4 &lhs, const IPV4 &rhs)
+    {
+        return lhs.value() == rhs.value();
+    }
 }
 

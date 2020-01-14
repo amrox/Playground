@@ -67,5 +67,9 @@ TEST_CASE("IPv4 data type")
 
     CHECK(playground::IPV4::from_string("pizza!") == std::nullopt);
     
-    // TODO: parse the ip address
+    CHECK(playground::IPV4::from_string("1.1.1.1.1") == std::nullopt);
+    CHECK(playground::IPV4::from_string("1000.1.1.1") == std::nullopt);
+    CHECK(playground::IPV4::from_string("1.1.1") == std::nullopt);
+    
+    CHECK(playground::IPV4::from_string("10.254.3.100") == playground::IPV4 { 10, 254, 3, 100 });
 }
