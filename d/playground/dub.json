@@ -1,0 +1,9 @@
+{
+	"authors": [
+		"Andrew Mroczkowski"
+	],
+	"copyright": "Copyright © 2020, Andrew Mroczkowski",
+	"description": "A minimal D application.",
+	"license": "MIT",
+	"name": "playground"
+}
