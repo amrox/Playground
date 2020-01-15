@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-// #include <istream>
 #include <numeric>
 #include <optional>
 #include <sstream>
@@ -38,7 +37,7 @@ namespace playground {
 
     // straightforward, imperative
     template<typename T>
-    auto sum_div_by_3_or_5(T const up_to) -> long long
+    constexpr auto sum_div_by_3_or_5(T const up_to) -> long long
     {
         static_assert(std::is_integral<T>::value, "Integral required.");
 
@@ -56,7 +55,7 @@ namespace playground {
 
     // sorta functional approach using stl 
     template<typename T>
-    auto sum_div_by_3_or_5_stl(T const up_to) -> long long
+    constexpr auto sum_div_by_3_or_5_stl(T const up_to) -> long long
     {
         static_assert(std::is_integral<T>::value, "Integral required.");
 
@@ -98,9 +97,9 @@ namespace playground {
         {
         }
 
-        static std::optional<IPV4> from_string(std::string const & str)
+        static auto from_string(std::string const & str) -> std::optional<IPV4>
         {
-            uint8_t ip[4];
+            uint8_t ip[4] {};
 
             std::vector<std::string> tokens;
             std::string token;
@@ -137,7 +136,7 @@ namespace playground {
 
         IPV4 &operator=(IPV4 const & other) = default;
 
-        auto value() const -> uint32_t 
+        constexpr auto value() const -> uint32_t 
         {
             // TODO: this isn't right
             return static_cast<uint32_t>(*_ip);
