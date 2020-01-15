@@ -161,5 +161,35 @@ namespace playground {
     {
         return lhs.value() == rhs.value();
     }
+
+    template <typename T>
+    constexpr auto min(std::initializer_list<T> list) -> T
+    {
+        T m { *list.begin() };
+        for( auto elem : list )
+        {
+            if (elem < m) {
+                m = elem;
+            }
+        }
+        return m;
+    }
+
+
+    template <typename T>
+    constexpr auto find(std::initializer_list<T> list, std::function<bool(const T&, const T&)> cmp) -> T
+    {
+        T m{*list.begin()};
+        for (auto elem : list)
+        {
+            if (cmp(elem, m))
+            {
+                m = elem;
+            }
+        }
+        return m;
+    }
+
+
 }
 

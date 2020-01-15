@@ -73,3 +73,21 @@ TEST_CASE("IPv4 data type")
     
     CHECK(playground::IPV4::from_string("10.254.3.100") == playground::IPV4 { 10, 254, 3, 100 });
 }
+
+
+// Write a function template that can take any number of arguments and returns
+// the minimum value of them all, using operator < for comparison. Write a
+// variant of this function template that can be parameterized with a binary
+// comparison function to use instead of operator <.
+TEST_CASE("variadic min function")
+{
+    CHECK(playground::min({1}) == 1);
+    CHECK(playground::min({4, 5}) == 4);
+    CHECK(playground::min({10, 1, 100}) == 1);
+    CHECK(playground::min({1, -5, 0}) == -5);
+
+    // am i doing this right?
+    // TODO: can we loose the <int> somehow?
+    CHECK(playground::find<int>({1, 2}, [](auto i, auto j) { return i < j; }) == 1);
+    CHECK(playground::find<int>({1, 2}, [](auto i, auto j) { return i > j; }) == 2);
+}
