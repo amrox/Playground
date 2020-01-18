@@ -5,6 +5,8 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
+#include <array>
+
 #include "playground.h"
 
 TEST_CASE( "Find the kth smallest value in a list", "[]" ) {
@@ -90,4 +92,28 @@ TEST_CASE("variadic min function")
     // TODO: can we loose the <int> somehow?
     CHECK(playground::find<int>({1, 2}, [](auto i, auto j) { return i < j; }) == 1);
     CHECK(playground::find<int>({1, 2}, [](auto i, auto j) { return i > j; }) == 2);
+}
+
+// Write a set of general-purpose functions that enable checking whether any,
+// all, or none of the specified arguments are present in a given container.
+// These functions should make it possible to write code as follows:
+//     
+//    std::vector<int> v{ 1, 2, 3, 4, 5, 6 };
+//    assert(contains_any(v, 0, 3, 30));
+//    
+//    std::array<int, 6> a{ { 1, 2, 3, 4, 5, 6 } };
+//    assert(contains_all(a, 1, 3, 5, 6));
+//    
+//    std::list<int> l{ 1, 2, 3, 4, 5, 6 };
+//    assert(!contains_none(l, 0, 6));
+//
+TEST_CASE("20. Container any, all, none")
+{
+    std::vector<int> v{1, 2, 3, 4, 5, 6};
+    CHECK(playground::contains_any(v, 3) == true);
+    CHECK(playground::contains_any(v, 7) == false);
+    CHECK(playground::contains_any(v, 0, 3, 30));
+
+    std::array<int, 6> a{1, 2, 3, 4, 5, 6};
+    CHECK(playground::contains_all(a, 1, 3, 5, 6));
 }

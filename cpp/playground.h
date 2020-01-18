@@ -190,6 +190,47 @@ namespace playground {
         return m;
     }
 
+    // ----
 
+    template<typename Container, typename T>
+    inline auto contains(const Container &c, T t) -> bool
+    {
+        return std::find(c.begin(), c.end(), t) != c.end();
+    }
+
+    template<typename Container, typename T>
+    constexpr auto contains_any(const Container &c, T t) -> bool
+    {
+        return contains(c, t);
+    }
+
+    template<typename Container, typename T, typename... Args>
+    constexpr auto contains_any(const Container &c, T t, Args... args) -> bool
+    {
+        return contains_any(c, t) || contains_any(c, args...); 
+    }
+
+    // ----
+
+    template<typename Container, typename T>
+    constexpr auto contains_all(const Container &c, T t) -> bool
+    {
+        return contains(c, t);
+    }
+
+    template<typename Container, typename T, typename... Args>
+    constexpr auto contains_all(const Container &c, T t, Args... args) -> bool
+    {
+        return contains_all(c, t) && contains_all(c, args...); 
+    }
+
+    // ----
+    
+    template<typename Container, typename T, typename... Args>
+    constexpr auto contains_none(const Container &c, T t, Args... args) -> bool
+    {
+        // return !contains_any(c, t) && !contains_all(c, args...); 
+        return !contains_all(c, t, args...);
+    }
 }
 
