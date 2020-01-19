@@ -195,7 +195,7 @@ namespace playground {
     template<typename Container, typename T>
     inline auto contains(const Container &c, T t) -> bool
     {
-        return std::find(c.begin(), c.end(), t) != c.end();
+        return std::find(c.cbegin(), c.cend(), t) != c.end();
     }
 
     template<typename Container, typename T>
