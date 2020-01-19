@@ -57,3 +57,4 @@ _deps
 cmake-build-*/
 build/
 
+.idea/
