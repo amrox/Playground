@@ -76,7 +76,7 @@ namespace playground {
     }
 
     template <typename T>
-    auto gcd(T a, T b) -> T
+    constexpr auto gcd(T a, T b) -> T
     {
         static_assert(std::is_integral<T>::value, "Integral required.");
         
