@@ -117,3 +117,18 @@ TEST_CASE("20. Container any, all, none")
     std::array<int, 6> a{1, 2, 3, 4, 5, 6};
     CHECK(playground::contains_all(a, 1, 3, 5, 6));
 }
+
+TEST_CASE("unique_paths")
+{
+    CHECK(playground::unique_paths(1, 1) == 1);
+    CHECK(playground::unique_paths(1, 3) == 1);
+    CHECK(playground::unique_paths(3, 1) == 1);
+    
+    CHECK(playground::unique_paths(2, 2) == 2);
+    
+    CHECK(playground::unique_paths(2, 3) == 3);
+    
+    CHECK(playground::unique_paths(3, 3) == 6);
+    
+    // CHECK(playground::unique_paths(3, 4) == 8);
+}

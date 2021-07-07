@@ -232,5 +232,14 @@ namespace playground {
         // return !contains_any(c, t) && !contains_all(c, args...); 
         return !contains_all(c, t, args...);
     }
+
+    constexpr int unique_paths(const int rows, const int cols)
+    {
+        if (rows == 1 || cols == 1) {
+            return 1;
+        }
+
+        return unique_paths(rows - 1, cols) + unique_paths(rows, cols - 1);
+    }
 }
 

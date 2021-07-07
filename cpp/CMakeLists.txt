@@ -8,7 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_library(Catch INTERFACE)
 target_include_directories(Catch INTERFACE 3rdparty/catch2)
 
-add_library(playground playground.cpp playground.h)
+add_library(playground playground.cpp)
 target_include_directories(playground PUBLIC ${PROJECT_SOURCE_DIR})
 
 add_executable(playground_test tests/test_playground.cpp)
