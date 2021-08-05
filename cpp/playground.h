@@ -6,6 +6,11 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <iostream>
+#include <ranges>
+#include <cmath>
+#include <thread>
+#include <future>
 
 namespace playground {
 
@@ -240,6 +245,116 @@ namespace playground {
         }
 
         return unique_paths(rows - 1, cols) + unique_paths(rows, cols - 1);
+    }
+
+    /* subset sum attempt #1
+     * naive solution = iterate all combinations
+     * trying to use "no raw loops"
+     */
+
+    template<typename T>
+    std::vector<std::vector<T>> subset_sum(std::vector<T> const & nums, T target_sum) {
+
+        std::vector<std::vector<T>> solutions {};
+        std::vector<long long> x(std::pow(2, nums.size()));
+        std::iota(std::begin(x), std::end(x), 0);
+        std::for_each(x.begin(), x.end(), [nums, target_sum, &solutions](auto &n){
+            std::vector<T> subset;
+            for (typename std::vector<T>::size_type j = 0; j < nums.size(); j++) {
+                if (0x1<<j & n) {
+                    subset.push_back(nums[j]);
+                }
+            }
+            auto subset_sum = std::accumulate(subset.begin(), subset.end(), 0);
+            if (subset_sum == target_sum) {
+                solutions.push_back(subset);
+            }
+         }); 
+
+        return solutions;
+    }
+
+    
+    template<typename T>
+    std::vector<std::vector<T>> subset_sum_2(std::vector<T> const & nums, T target_sum) {
+        
+        std::vector<std::vector<T>> solutions {};
+        std::vector<T> subset;
+        for(long long i=0; i<std::pow(2, nums.size()); i++) {
+            subset.clear();
+             for (typename std::vector<T>::size_type j = 0; j < nums.size(); j++) {
+                if (0x1<<j & i) {
+                    subset.push_back(nums[j]);
+                }
+            }
+            auto subset_sum = std::accumulate(subset.begin(), subset.end(), 0);
+            if (subset_sum == target_sum) {
+                solutions.push_back(std::vector(subset));
+            }
+        }
+
+        return solutions;
+    }
+
+    template<typename T>
+    std::vector<std::vector<T>> subset_sum_3(std::vector<T> const & nums, T target_sum) {
+        std::vector<std::vector<T>> solutions {};
+
+        std::vector<T> subset;
+        for (int i : std::views::iota(0, std::pow(2, nums.size()))) {
+            subset.clear();
+            for (typename std::vector<T>::size_type j = 0; j < nums.size(); j++) {
+                if (0x1<<j & i) {
+                    subset.push_back(nums[j]);
+                }
+            }
+            auto subset_sum = std::accumulate(subset.begin(), subset.end(), 0);
+            if (subset_sum == target_sum) {
+                solutions.push_back(subset);
+            }
+        }
+        return solutions;
+    }
+
+    template<typename T>
+    std::vector<std::vector<T>> subset_sum_4(std::vector<T> const & nums, T target_sum, int job_count = 1) {
+
+        std::vector<std::vector<T>> solutions {};
+        std::vector<std::shared_future<std::vector<std::vector<T>>>> jobs {};
+
+        const long long chunk_size = std::pow(2, nums.size()) / job_count;
+
+        for (int t : std::views::iota(0, job_count)) {
+
+            std::shared_future<std::vector<std::vector<T>>> subsolution_future = 
+            std::async(std::launch::async, [nums, target_sum, t, chunk_size]() {
+
+                std::vector<std::vector<T>> subsolutions;
+                std::vector<T> subset;
+                const long long begin = t * chunk_size;
+                for (int i : std::views::iota(begin, begin + chunk_size)) {
+                    subset.clear();
+                    for (typename std::vector<T>::size_type j = 0; j < nums.size(); j++) {
+                        if (0x1<<j & i) {
+                            subset.push_back(nums[j]);
+                        }
+                    }
+                    auto subset_sum = std::accumulate(subset.begin(), subset.end(), 0);
+                    if (subset_sum == target_sum) {
+                        subsolutions.push_back(subset);
+                    }
+                }
+                return subsolutions;
+            });
+            jobs.push_back(subsolution_future);
+        }
+
+        for( auto job : jobs ) {
+            auto s = job.get();
+            solutions.insert(std::end(solutions), std::begin(s), std::end(s));
+        }
+
+        return solutions;
     }
 }
 

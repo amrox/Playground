@@ -132,3 +132,42 @@ TEST_CASE("unique_paths")
     
     // CHECK(playground::unique_paths(3, 4) == 8);
 }
+
+void print_subset_sum_solutions(std::vector<std::vector<int>> const & solutions) {
+     std::for_each(solutions.begin(), solutions.end(), [](auto &s ){
+        for_each(s.begin(), s.end(), [](auto &i ){
+            std::cout << i << " ";
+        });
+        std::cout << std::endl;
+    });
+}
+
+TEST_CASE("subset_sum")
+{
+    std::vector<int> nums1 {2, 3, 5, 7, 1, 1};
+    std::vector<int> nums2 {2, 3, 5, 7, 1, 1,
+                            2, 3, 5, 7, 1, 1,
+                            2, 3, 5, 7, 1, 1,
+                            2, 3, 5, 7, 1, 1,
+                            4, 8, 10
+
+                            };
+
+    // auto r1 = playground::subset_sum(nums1, 10);
+    // print_subset_sum_solutions(r1);
+    
+    // auto r2 = playground::subset_sum_2(nums1, 10);
+    // print_subset_sum_solutions(r2);
+    
+    // auto r3 = playground::subset_sum_3(nums1, 10);
+    // print_subset_sum_solutions(r3);
+    
+    // auto r4 = playground::subset_sum_4(nums1, 10, 1);
+    // print_subset_sum_solutions(r4);
+
+    // auto r5 = playground::subset_sum_4(nums2, 15, 1);
+    // print_subset_sum_solutions(r5);
+    
+    auto r6 = playground::subset_sum_4(nums2, 15, 12);
+    print_subset_sum_solutions(r6);
+}
