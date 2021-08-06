@@ -319,18 +319,22 @@ namespace playground {
     template<typename T>
     std::vector<std::vector<T>> subset_sum_4(std::vector<T> const & nums, T target_sum, int job_count = 1) {
 
-        std::vector<std::vector<T>> solutions {};
-        std::vector<std::shared_future<std::vector<std::vector<T>>>> jobs {};
+        using num_list = std::vector<T>;
+        using solution_set = std::vector<num_list>;
+        using solution_set_future = std::shared_future<solution_set>;
+
+        solution_set solutions {};
+        std::vector<solution_set_future> jobs {};
 
         const long long chunk_size = std::pow(2, nums.size()) / job_count;
 
         for (int t : std::views::iota(0, job_count)) {
 
-            std::shared_future<std::vector<std::vector<T>>> subsolution_future = 
+            solution_set_future subsolution_future = 
             std::async(std::launch::async, [nums, target_sum, t, chunk_size]() {
 
-                std::vector<std::vector<T>> subsolutions;
-                std::vector<T> subset;
+                solution_set subsolutions;
+                num_list subset;
                 const long long begin = t * chunk_size;
                 for (int i : std::views::iota(begin, begin + chunk_size)) {
                     subset.clear();
